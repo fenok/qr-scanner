@@ -1,2 +1,2 @@
 export { App } from './App';
-export { Section, CurrentSectionContext, SetCurrentSectionContext } from './CurrentSectionProvider';
+export { Section, useCurrentSection, useSetCurrentSection } from './CurrentSectionProvider';

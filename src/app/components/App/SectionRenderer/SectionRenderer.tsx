@@ -1,10 +1,10 @@
 import React from 'react';
-import { CurrentSectionContext, Section } from '../CurrentSectionProvider';
+import { Section, useCurrentSection } from '../CurrentSectionProvider';
 import { SettingsSection } from '../../SettingsSection';
 import { MainSection } from '../../MainSection';
 
 const SectionRenderer: React.FC = () => {
-    const currentSection = React.useContext(CurrentSectionContext);
+    const currentSection = useCurrentSection();
 
     if (currentSection === Section.MAIN) {
         return <MainSection />;

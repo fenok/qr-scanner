@@ -4,3 +4,8 @@ export enum State {
     ERROR = 'error',
     DUPLICATE = 'duplicate',
 }
+
+export interface StateData {
+    state: State;
+    person?: Record<string, string>;
+}

@@ -13,6 +13,7 @@ export const GlobalStyle = createGlobalStyle`
         display: flex;
         flex-grow: 1;
         align-items: stretch;
+        font-family: sans-serif;
     }
     
     #root {

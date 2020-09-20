@@ -1,14 +1,28 @@
 import React from 'react';
-import { SetCurrentSectionContext, Section } from '../App';
+import { Section, useSetCurrentSection } from '../App';
+import { DbSettings } from './DbSettings';
+import Button from '@material-ui/core/Button';
+import styled from 'styled-components';
 
 const SettingsSection: React.FC = () => {
-    const setCurrentSection = React.useContext(SetCurrentSectionContext);
+    const setCurrentSection = useSetCurrentSection();
 
     return (
-        <div>
-            SETTINGS Section<button onClick={() => setCurrentSection(Section.MAIN)}>TO MAIN</button>
-        </div>
+        <Root>
+            <Button variant="contained" color="primary" onClick={() => setCurrentSection(Section.MAIN)}>
+                Начать сканирование
+            </Button>
+            <DbSettings />
+        </Root>
     );
 };
+
+const Root = styled.div`
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
 
 export { SettingsSection };

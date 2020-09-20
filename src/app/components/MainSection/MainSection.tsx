@@ -1,59 +1,95 @@
 import React from 'react';
-import { SetCurrentSectionContext } from '../App/CurrentSectionProvider';
 import styled from 'styled-components';
 import { useEnteredCode } from './useEnteredCode';
 import { useCodeProcessor } from './useCodeProcessor';
-import { State } from './types';
+import { State, StateData } from './types';
+import { useSettingsOnEsc } from './useSettingsOnEsc';
+import { useSettings } from '../../hooks/useSettings';
+import { SettingsDb } from '../../lib/getSettingsDb';
+import { getFileLink } from '../../lib/getFileLink';
+import { Card } from '@material-ui/core';
 
 const MainSection: React.FC = () => {
-    const setCurrentSection = React.useContext(SetCurrentSectionContext);
-    const [currentState, setCurrentState] = React.useState<State>(State.WAITING);
+    const [currentState, setCurrentState] = React.useState<StateData>({ state: State.WAITING });
+
+    const settings = useSettings();
 
     const { process } = useCodeProcessor(setCurrentState);
+    useEnteredCode(process, currentState.state !== State.WAITING);
 
-    useEnteredCode(process, currentState !== State.WAITING);
+    useAutoStateReset(currentState, setCurrentState, settings.messageTimeoutSeconds * 1000);
 
+    useSettingsOnEsc();
+
+    return (
+        <Root backgroundImageUrl={getFileLink(settings.backgroundImagePath)}>
+            <Card>
+                <Message>{getMessage(currentState, settings)}</Message>
+            </Card>
+        </Root>
+    );
+};
+
+function useAutoStateReset(
+    currentState: StateData,
+    setCurrentState: React.Dispatch<React.SetStateAction<StateData>>,
+    timeout: number,
+) {
     React.useEffect(() => {
         let timerId: number;
 
-        if (currentState !== State.WAITING) {
+        if (currentState.state !== State.WAITING) {
             timerId = window.setTimeout(() => {
-                setCurrentState(State.WAITING);
-            }, 3000);
+                setCurrentState({ state: State.WAITING });
+            }, timeout);
         }
 
         return () => {
             window.clearTimeout(timerId);
         };
-    }, [currentState]);
+    }, [currentState, setCurrentState, timeout]);
+}
 
-    return (
-        <Root>
-            <div>{getMessage(currentState)}</div>
-            {/*<button onClick={() => setCurrentSection(Section.SETTINGS)}>TO SETTINGS</button>*/}
-        </Root>
-    );
-};
-
-function getMessage(state: State): string {
-    switch (state) {
+function getMessage(state: StateData, settings: SettingsDb): string {
+    switch (state.state) {
         case State.WAITING:
-            return 'Просканируйте код';
+            return insertValues(settings.waitingMessageText, state.person);
         case State.SUCCESS:
-            return 'Успех';
+            return insertValues(settings.successMessageText, state.person);
         case State.ERROR:
-            return 'Ошибка';
+            return insertValues(settings.errorMessageText, state.person);
         case State.DUPLICATE:
-            return 'Уже просканирован';
+            return insertValues(settings.duplicateMessageText, state.person);
     }
 }
 
-const Root = styled.div`
-    margin: auto;
+function insertValues(message: string, values: Record<string, string> = {}) {
+    let result = message;
+
+    for (const valueKey in values) {
+        result = result.replace(new RegExp(`{{${valueKey}}}`, 'g'), values[valueKey]);
+    }
+
+    return result;
+}
+
+const Root = styled.div<{ backgroundImageUrl?: string }>`
+    padding: 20px;
+    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    background: ${({ backgroundImageUrl }) => backgroundImageUrl && `url(${backgroundImageUrl})`};
+    background-size: cover;
+    background-position: center;
 `;
 
-export { MainSection };
+const Message = styled.p`
+    margin: 0;
+    padding: 20px;
+    font-weight: bold;
+    text-align: center;
+`;
+
+export { MainSection, StateData };

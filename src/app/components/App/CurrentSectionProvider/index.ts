@@ -1,6 +1,1 @@
-export {
-    Section,
-    CurrentSectionProvider,
-    CurrentSectionContext,
-    SetCurrentSectionContext,
-} from './CurrentSectionProvider';
+export { Section, CurrentSectionProvider, useCurrentSection, useSetCurrentSection } from './CurrentSectionProvider';

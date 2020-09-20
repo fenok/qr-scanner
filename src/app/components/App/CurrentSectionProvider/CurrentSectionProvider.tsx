@@ -18,4 +18,14 @@ const CurrentSectionProvider: React.FC = ({ children }) => {
     );
 };
 
-export { Section, CurrentSectionProvider, CurrentSectionContext, SetCurrentSectionContext };
+const useCurrentSection = () => React.useContext(CurrentSectionContext);
+const useSetCurrentSection = () => React.useContext(SetCurrentSectionContext);
+
+export {
+    Section,
+    CurrentSectionProvider,
+    CurrentSectionContext,
+    SetCurrentSectionContext,
+    useCurrentSection,
+    useSetCurrentSection,
+};
