@@ -103,7 +103,21 @@ const Root = styled.div<{ backgroundImageUrl?: string }>`
     background-position: center;
 `;
 
-const shakeAnimation = keyframes`
+const nodeAnimation = keyframes`
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+`;
+
+const intensiveShakeAnimation = keyframes`
     10%, 90% {
         transform: translate3d(-1px, 0, 0);
     }
@@ -121,13 +135,13 @@ const shakeAnimation = keyframes`
     }
 `;
 
-const appearAnimation = keyframes`
+const shakeAnimation = keyframes`
     0% {
-        transform: translateY(0);
+        transform: translateX(0);
     }
 
     50% {
-        transform: translateY(10px);
+        transform: translateX(10px);
     }
 
     100% {
@@ -135,17 +149,17 @@ const appearAnimation = keyframes`
     }
 `;
 
-const errorCardCss = css`
+const successCardCss = css`
     && {
-        animation: ${shakeAnimation} 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-        background-color: #f4998d;
+        animation: ${nodeAnimation} 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        background-color: #afd5aa;
     }
 `;
 
-const successCardCss = css`
+const errorCardCss = css`
     && {
-        animation: ${appearAnimation} 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
-        background-color: #afd5aa;
+        animation: ${intensiveShakeAnimation} 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        background-color: #f4998d;
     }
 `;
 
