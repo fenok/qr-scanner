@@ -8,6 +8,7 @@ import { useSettings } from '../../hooks/useSettings';
 import { SettingsDb } from '../../lib/getSettingsDb';
 import { getFileLink } from '../../lib/getFileLink';
 import { Card } from '@material-ui/core';
+import { SettingsHint } from './SetingsHint';
 
 const MainSection: React.FC = () => {
     const [currentState, setCurrentState] = React.useState<StateData>({ state: State.WAITING });
@@ -31,6 +32,7 @@ const MainSection: React.FC = () => {
                     {imageLink ? <MessageImage src={imageLink} /> : null}
                 </MessageContent>
             </MessageCard>
+            <SettingsHint />
         </Root>
     );
 };
