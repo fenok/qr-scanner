@@ -104,32 +104,35 @@ const Root = styled.div<{ backgroundImageUrl?: string }>`
 `;
 
 const shakeAnimation = keyframes`
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
   
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
+    20%, 80% {
+        transform: translate3d(2px, 0, 0);
+    }
 
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
+    30%, 50%, 70% {
+        transform: translate3d(-4px, 0, 0);
+    }
 
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
+    40%, 60% {
+        transform: translate3d(4px, 0, 0);
+    }
 `;
 
 const appearAnimation = keyframes`
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(10px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
 `;
 
 const errorCardCss = css`
