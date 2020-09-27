@@ -13,6 +13,13 @@
     ],
     "parser": "@typescript-eslint/parser",
     "plugins": ["react-hooks"],
+    "settings": {
+        "import/resolver": {
+            "node": {
+                "extensions": [".js", ".jsx", ".ts", ".tsx"]
+            }
+        }
+    },
     "rules": {
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "error"
