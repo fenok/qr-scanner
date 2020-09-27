@@ -92,7 +92,6 @@
     "dependencies": {
         "@material-ui/core": "4.11.0",
         "csv-parse": "4.12.0",
-        "csv-parser": "2.3.3",
         "csv-stringify": "5.5.1",
         "electron-squirrel-startup": "^1.0.0",
         "lowdb": "1.0.0",

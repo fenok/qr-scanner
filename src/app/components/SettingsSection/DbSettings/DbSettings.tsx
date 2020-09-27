@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import fs from 'fs';
-import parseCsv from 'csv-parser';
+import parseCsv from 'csv-parse/lib/sync';
 import stringifyCsv from 'csv-stringify/lib/sync';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -16,16 +16,10 @@ const DbSettings: React.FC = () => {
 
     const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files[0];
-
-        const results: unknown[] = [];
-
-        fs.createReadStream(file.path)
-            .pipe(parseCsv())
-            .on('data', (data) => results.push(data))
-            .on('end', () => {
-                db.set('persons', results).write();
-                onOpen();
-            });
+        const fileContent = fs.readFileSync(file.path, { encoding: 'utf8' });
+        const persons = parseCsv(fileContent, { columns: true });
+        db.set('persons', persons).write();
+        onOpen();
     };
 
     const onExportDb = () => {
