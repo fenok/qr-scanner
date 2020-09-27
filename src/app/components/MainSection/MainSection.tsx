@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { useEnteredCode } from './useEnteredCode';
 import { useCodeProcessor } from './useCodeProcessor';
 import { State, StateData } from './types';
@@ -21,11 +21,16 @@ const MainSection: React.FC = () => {
 
     useSettingsOnEsc();
 
+    const imageLink = getImageLink(currentState, settings);
+
     return (
         <Root backgroundImageUrl={getFileLink(settings.backgroundImagePath)}>
-            <Card>
-                <Message>{getMessage(currentState, settings)}</Message>
-            </Card>
+            <MessageCard state={currentState.state}>
+                <MessageContent>
+                    <MessageText>{getMessage(currentState, settings)}</MessageText>
+                    {imageLink ? <MessageImage src={imageLink} /> : null}
+                </MessageContent>
+            </MessageCard>
         </Root>
     );
 };
@@ -63,6 +68,19 @@ function getMessage(state: StateData, settings: SettingsDb): string {
     }
 }
 
+function getImageLink(state: StateData, settings: SettingsDb) {
+    switch (state.state) {
+        case State.WAITING:
+            return undefined;
+        case State.SUCCESS:
+            return getFileLink(settings.successImagePath);
+        case State.ERROR:
+            return getFileLink(settings.errorImagePath);
+        case State.DUPLICATE:
+            return getFileLink(settings.duplicateImagePath);
+    }
+}
+
 function insertValues(message: string, values: Record<string, string> = {}) {
     let result = message;
 
@@ -80,16 +98,98 @@ const Root = styled.div<{ backgroundImageUrl?: string }>`
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background: ${({ backgroundImageUrl }) => backgroundImageUrl && `url(${backgroundImageUrl})`};
+    background: ${({ backgroundImageUrl }) => backgroundImageUrl && `url("${backgroundImageUrl}")`};
     background-size: cover;
     background-position: center;
 `;
 
-const Message = styled.p`
-    margin: 0;
+const shakeAnimation = keyframes`
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+`;
+
+const appearAnimation = keyframes`
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
+const errorCardCss = css`
+    && {
+        animation: ${shakeAnimation} 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        background-color: #f4998d;
+    }
+`;
+
+const successCardCss = css`
+    && {
+        animation: ${appearAnimation} 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        background-color: #afd5aa;
+    }
+`;
+
+const duplicateCss = css`
+    && {
+        animation: ${shakeAnimation} 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        background-color: #ffdda1;
+    }
+`;
+
+function getMessageCardCss(state: State) {
+    switch (state) {
+        case State.ERROR:
+            return errorCardCss;
+        case State.SUCCESS:
+            return successCardCss;
+        case State.DUPLICATE:
+            return duplicateCss;
+        default:
+            return '';
+    }
+}
+
+const MessageCard = styled(Card)<{ state: State }>`
+    && {
+        max-width: 500px;
+    }
+    ${({ state }) => getMessageCardCss(state)};
+`;
+
+const MessageContent = styled.div`
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+`;
+
+const MessageText = styled.p`
+    margin: 0;
     font-weight: bold;
     text-align: center;
+`;
+
+const MessageImage = styled.img`
+    margin-top: 20px;
+    width: 60px;
+    height: 60px;
 `;
 
 export { MainSection };

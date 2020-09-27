@@ -11,6 +11,9 @@ export interface SettingsDb {
     duplicateMessageText: string;
     messageTimeoutSeconds: number;
     backgroundImagePath: string;
+    successImagePath: string;
+    errorImagePath: string;
+    duplicateImagePath: string;
 }
 
 export const DEFAULT_SETTINGS: SettingsDb = {
@@ -23,6 +26,9 @@ export const DEFAULT_SETTINGS: SettingsDb = {
     duplicateMessageText: 'Регистрация {{name}} уже выполнена',
     messageTimeoutSeconds: 3,
     backgroundImagePath: '',
+    successImagePath: '',
+    errorImagePath: '',
+    duplicateImagePath: '',
 };
 
 let SETTINGS_DB: low.LowdbSync<SettingsDb> | undefined;
