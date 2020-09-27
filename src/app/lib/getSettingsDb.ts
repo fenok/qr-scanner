@@ -4,6 +4,7 @@ import FileSync from 'lowdb/adapters/FileSync';
 export interface SettingsDb {
     idFieldName: string;
     scannedFieldName: string;
+    scannedFieldValue: string;
     waitingMessageText: string;
     successMessageText: string;
     errorMessageText: string;
@@ -15,6 +16,7 @@ export interface SettingsDb {
 export const DEFAULT_SETTINGS: SettingsDb = {
     idFieldName: 'id',
     scannedFieldName: 'scanned',
+    scannedFieldValue: '1',
     waitingMessageText: 'Ожидание сканирования',
     successMessageText: 'Регистрация {{name}} проведена успешно',
     errorMessageText: 'Для id {{id}} запись не найдена',

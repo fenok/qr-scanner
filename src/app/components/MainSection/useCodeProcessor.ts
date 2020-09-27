@@ -14,13 +14,13 @@ export function useCodeProcessor(setCurrentState: (state: StateData) => void) {
             .value();
 
         if (person) {
-            if (person[settings.scannedFieldName] === '1') {
+            if (person[settings.scannedFieldName] === settings.scannedFieldValue) {
                 setCurrentState({ state: State.DUPLICATE, person });
             } else {
                 personsDb
                     .get('persons')
                     .find({ [settings.idFieldName]: code })
-                    .assign({ [settings.scannedFieldName]: '1' })
+                    .assign({ [settings.scannedFieldName]: settings.scannedFieldValue })
                     .write();
                 setCurrentState({ state: State.SUCCESS, person });
             }
