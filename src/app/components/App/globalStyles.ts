@@ -9,6 +9,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     body {
+        min-width: 320px;
         margin: 0;
         display: flex;
         flex-grow: 1;

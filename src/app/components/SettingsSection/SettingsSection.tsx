@@ -18,6 +18,7 @@ const SettingsSection: React.FC = () => {
 };
 
 const Root = styled.div`
+    margin: auto;
     flex-grow: 1;
     padding: 20px;
     display: flex;

@@ -37,11 +37,21 @@ const DbSettings: React.FC = () => {
         <Root>
             <Header>Настройки БД</Header>
             <HeaderDivider />
-            <FileInput type={'file'} onChange={onReplacingFileChange} value={''} />
-            <FileInput type={'file'} onChange={onAppendingFileChange} value={''} />
-            <Button onClick={onExportDb}>Экспортировать БД</Button>
+            <ButtonGroup>
+                <Button variant="outlined" color={'primary'} onClick={onExportDb}>
+                    Экспортировать в CSV
+                </Button>
+                <Button variant="outlined" color={'primary'} component={'label'}>
+                    Дополнить из CSV
+                    <FileInput type={'file'} accept={'.csv, text/csv'} onChange={onAppendingFileChange} value={''} />
+                </Button>
+                <Button variant="outlined" color={'secondary'} component={'label'}>
+                    Импортировать из CSV
+                    <FileInput type={'file'} accept={'.csv, text/csv'} onChange={onReplacingFileChange} value={''} />
+                </Button>
+            </ButtonGroup>
             <Snackbar open={replacingNoteOpen} autoHideDuration={3000} onClose={onReplacingNoteClose}>
-                <SnackbarContent message={'БД заменена'} />
+                <SnackbarContent message={'БД импортирована'} />
             </Snackbar>
             <Snackbar open={appendingNoteOpen} autoHideDuration={3000} onClose={onAppendingNoteClose}>
                 <SnackbarContent message={'БД дополнена'} />
@@ -71,7 +81,14 @@ const HeaderDivider = styled(Divider)`
     }
 `;
 
-const FileInput = styled.input``;
+const ButtonGroup = styled.div`
+    display: grid;
+    grid-row-gap: 8px;
+`;
+
+const FileInput = styled.input`
+    display: none;
+`;
 
 function download(data: string) {
     const file = new Blob([data], { type: 'text/csv' });
