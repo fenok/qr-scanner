@@ -12,14 +12,21 @@ import { Card, Divider } from '@material-ui/core';
 
 const DbSettings: React.FC = () => {
     const db = getPersonsDb();
-    const [open, onOpen, onClose] = useOpenState();
+    const [replacingNoteOpen, onReplacingNoteOpen, onReplacingNoteClose] = useOpenState();
+    const [appendingNoteOpen, onAppendingNoteOpen, onAppendingNoteClose] = useOpenState();
 
-    const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files[0];
-        const fileContent = fs.readFileSync(file.path, { encoding: 'utf8' });
-        const persons = parseCsv(fileContent, { columns: true });
-        db.set('persons', persons).write();
-        onOpen();
+    const onReplacingFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const replacingPersons = getPersonsFromFile(event.target.files[0]);
+        db.set('persons', replacingPersons).write();
+        onReplacingNoteOpen();
+    };
+
+    const onAppendingFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const appendingPersons = getPersonsFromFile(event.target.files[0]);
+        db.get('persons')
+            .push(...appendingPersons)
+            .write();
+        onAppendingNoteOpen();
     };
 
     const onExportDb = () => {
@@ -30,14 +37,23 @@ const DbSettings: React.FC = () => {
         <Root>
             <Header>Настройки БД</Header>
             <HeaderDivider />
-            <FileInput type={'file'} onChange={onFileChange} value={''} />
+            <FileInput type={'file'} onChange={onReplacingFileChange} value={''} />
+            <FileInput type={'file'} onChange={onAppendingFileChange} value={''} />
             <Button onClick={onExportDb}>Экспортировать БД</Button>
-            <Snackbar open={open} autoHideDuration={3000} onClose={onClose}>
-                <SnackbarContent message={'БД обновлена'} />
+            <Snackbar open={replacingNoteOpen} autoHideDuration={3000} onClose={onReplacingNoteClose}>
+                <SnackbarContent message={'БД заменена'} />
+            </Snackbar>
+            <Snackbar open={appendingNoteOpen} autoHideDuration={3000} onClose={onAppendingNoteClose}>
+                <SnackbarContent message={'БД дополнена'} />
             </Snackbar>
         </Root>
     );
 };
+
+function getPersonsFromFile(file: File): Record<string, string>[] {
+    const fileContent = fs.readFileSync(file.path, { encoding: 'utf8' });
+    return parseCsv(fileContent, { columns: true });
+}
 
 const Root = styled(Card)`
     margin-top: 20px;
