@@ -1,7 +1,6 @@
-import { State } from './types';
+import { State, StateData } from './types';
 import { getPersonsDb } from '../../lib/getPersonsDb';
 import { useSettings } from '../../hooks/useSettings';
-import { StateData } from './MainSection';
 
 export function useCodeProcessor(setCurrentState: (state: StateData) => void) {
     const personsDb = getPersonsDb();

@@ -92,4 +92,4 @@ const Message = styled.p`
     text-align: center;
 `;
 
-export { MainSection, StateData };
+export { MainSection };
