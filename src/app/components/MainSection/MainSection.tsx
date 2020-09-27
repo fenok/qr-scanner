@@ -184,9 +184,12 @@ const MessageContent = styled.div`
 `;
 
 const MessageText = styled.p`
+    white-space: pre-line;
     margin: 0;
     font-weight: bold;
     text-align: center;
+    font-size: 24px;
+    line-height: 30px;
 `;
 
 const MessageImage = styled.img`
