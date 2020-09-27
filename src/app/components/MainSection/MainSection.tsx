@@ -87,7 +87,7 @@ function insertValues(message: string, values: Record<string, string> = {}) {
     let result = message;
 
     for (const valueKey in values) {
-        result = result.replace(new RegExp(`{{${valueKey}}}`, 'g'), values[valueKey]);
+        result = result.replace(new RegExp(`{{${valueKey}}}`, 'g'), values[valueKey] ?? '');
     }
 
     return result;
