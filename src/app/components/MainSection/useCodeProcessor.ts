@@ -22,7 +22,10 @@ export function useCodeProcessor(setCurrentState: (state: StateData) => void) {
                 personsDb
                     .get('persons')
                     .find({ [settings.idFieldName]: code })
-                    .assign({ [settings.scannedFieldName]: settings.scannedFieldValue })
+                    .assign({
+                        [settings.scannedFieldName]: settings.scannedFieldValue,
+                        [settings.scannedDateTimeName]: new Date().toISOString(),
+                    })
                     .write();
                 setCurrentState({ messageId: messageIdRef.current++, state: State.SUCCESS, person });
             }

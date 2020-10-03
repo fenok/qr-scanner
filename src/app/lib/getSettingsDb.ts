@@ -5,6 +5,7 @@ export interface SettingsDb {
     idFieldName: string;
     scannedFieldName: string;
     scannedFieldValue: string;
+    scannedDateTimeName: string;
     waitingMessageText: string;
     successMessageText: string;
     errorMessageText: string;
@@ -20,6 +21,7 @@ export const DEFAULT_SETTINGS: SettingsDb = {
     idFieldName: 'id',
     scannedFieldName: 'scanned',
     scannedFieldValue: '1',
+    scannedDateTimeName: 'scannedDateTime',
     waitingMessageText: '⌛ Ожидание сканирования',
     successMessageText: '✔️ Регистрация {{name}} проведена успешно',
     errorMessageText: '💩 Запись не найдена\n{{id}}',
