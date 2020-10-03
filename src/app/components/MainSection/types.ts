@@ -6,6 +6,7 @@ export enum State {
 }
 
 export interface StateData {
+    messageId: number;
     state: State;
     person?: Record<string, string>;
 }

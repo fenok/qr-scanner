@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function useEnteredCode(onCodeEntered: (code: string) => void, block: boolean) {
+export function useEnteredCode(onCodeEntered: (code: string) => void, block?: boolean) {
     const currentInputRef = React.useRef('');
 
     React.useEffect(() => {

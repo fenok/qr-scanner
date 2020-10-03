@@ -11,12 +11,12 @@ import { Card } from '@material-ui/core';
 import { SettingsHint } from './SetingsHint';
 
 const MainSection: React.FC = () => {
-    const [currentState, setCurrentState] = React.useState<StateData>({ state: State.WAITING });
+    const [currentState, setCurrentState] = React.useState<StateData>({ messageId: -1, state: State.WAITING });
 
     const settings = useSettings();
 
     const { process } = useCodeProcessor(setCurrentState);
-    useEnteredCode(process, currentState.state !== State.WAITING);
+    useEnteredCode(process);
 
     useAutoStateReset(currentState, setCurrentState, settings.messageTimeoutSeconds * 1000);
 
@@ -26,7 +26,7 @@ const MainSection: React.FC = () => {
 
     return (
         <Root backgroundImageUrl={getFileLink(settings.backgroundImagePath)}>
-            <MessageCard state={currentState.state}>
+            <MessageCard key={currentState.messageId} state={currentState.state}>
                 <MessageContent>
                     <MessageText>{getMessage(currentState, settings)}</MessageText>
                     {imageLink ? <MessageImage src={imageLink} /> : null}
@@ -47,7 +47,7 @@ function useAutoStateReset(
 
         if (currentState.state !== State.WAITING) {
             timerId = window.setTimeout(() => {
-                setCurrentState({ state: State.WAITING });
+                setCurrentState({ messageId: -1, state: State.WAITING });
             }, timeout);
         }
 
